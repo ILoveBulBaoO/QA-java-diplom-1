@@ -1,23 +1,19 @@
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import praktikum.Ingredient;
 import praktikum.IngredientType;
-
-import java.util.PrimitiveIterator;
 
 public class IngredientTest {
     private Ingredient ingredient;
     private String name;
     private float price;
 
-    @Mock
-    IngredientType mockIngredientType;
+    IngredientType ingredientType;
 
     @Before
     public void initIngredient() {
-        ingredient = new Ingredient(mockIngredientType, name, price);
+        ingredient = new Ingredient(ingredientType, name, price);
     }
 
     @Test
@@ -40,7 +36,7 @@ public class IngredientTest {
     // проверим, что метод getType() возвращает тип
     public void checkGetTypeTest() {
         IngredientType expectedType = ingredient.getType();
-        IngredientType actualType = mockIngredientType;
+        IngredientType actualType = ingredientType;
         Assert.assertEquals(expectedType, actualType);
     }
 }
