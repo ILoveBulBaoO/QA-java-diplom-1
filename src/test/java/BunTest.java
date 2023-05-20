@@ -13,7 +13,7 @@ public class BunTest {
     }
 
     @Test
-    // проверим, что метод getName возвращает имя
+    // проверим, что метод getName() возвращает имя
     public void checkGetNameTest() {
         String expectedName = bun.getName();
         String actualName = name;
@@ -21,7 +21,7 @@ public class BunTest {
     }
 
     @Test
-    // проверим, что метод getPrice возвращает цену с дельтой 0
+    // проверим, что метод getPrice() возвращает цену с дельтой 0
     public void checkGetPriceTest() {
         float expectedPrice = bun.getPrice();
         float actualPrice = price;
