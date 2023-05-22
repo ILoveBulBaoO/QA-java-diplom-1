@@ -1,3 +1,4 @@
+import TestData.TestBun;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -5,8 +6,8 @@ import praktikum.Bun;
 
 public class BunTest {
     private Bun bun;
-    private String name;
-    private float price;
+    private String name = TestBun.getTestBunName();
+    private float price = TestBun.getTestBunPrice();
     @Before
     public void initBun() {
         bun = new Bun(name, price);
@@ -14,17 +15,17 @@ public class BunTest {
 
     @Test
     // проверим, что метод getName() возвращает имя
-    public void checkGetNameTest() {
-        String expectedName = bun.getName();
-        String actualName = name;
+    public void getNameReturnBunName() {
+        String expectedName = name;
+        String actualName = bun.getName();
         Assert.assertEquals(expectedName, actualName);
     }
 
     @Test
     // проверим, что метод getPrice() возвращает цену с дельтой 0
-    public void checkGetPriceTest() {
-        float expectedPrice = bun.getPrice();
-        float actualPrice = price;
+    public void getPriceReturnBunPriceWithDeltaZero() {
+        float expectedPrice = price;
+        float actualPrice = bun.getPrice();
         Assert.assertEquals(expectedPrice, actualPrice, 0);
     }
 }
