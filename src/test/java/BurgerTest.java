@@ -1,9 +1,11 @@
-import org.hamcrest.MatcherAssert;
+import TestData.TestBun;
+import TestData.TestIngredient;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import praktikum.Bun;
 import praktikum.Burger;
@@ -20,7 +22,13 @@ public class BurgerTest {
     @Mock
     Bun mockBun;
     @Mock
-    Ingredient mockIngredient;
+    Ingredient firstMockIngredient;
+
+    @Mock
+    Ingredient secondMockIngredient;
+
+    @Mock
+    Ingredient thirdMockIngredient;
 
     @Before
     public void initBurger() {
@@ -43,8 +51,8 @@ public class BurgerTest {
         List<Ingredient> expectedIngredients = new ArrayList<>();
         List<Ingredient> actualIngredients = burger.ingredients;
 
-        expectedIngredients.add(mockIngredient);
-        burger.addIngredient(mockIngredient);
+        expectedIngredients.add(firstMockIngredient);
+        burger.addIngredient(firstMockIngredient);
 
         Assert.assertEquals("Failed to add Ingredients", expectedIngredients, actualIngredients);
 
@@ -56,8 +64,8 @@ public class BurgerTest {
         List<Ingredient> expectedIngredients = new ArrayList<>();
         List<Ingredient> actualIngredients = burger.ingredients;
 
-        expectedIngredients.add(0, mockIngredient);
-        burger.addIngredient(mockIngredient);
+        expectedIngredients.add(0, firstMockIngredient);
+        burger.addIngredient(firstMockIngredient);
 
         expectedIngredients.remove(0);
         burger.removeIngredient(0);
@@ -66,5 +74,43 @@ public class BurgerTest {
 
     }
 
+    @Test
+    // проверить перемещение ингредиента по индексу
+    public void moveIngredientFromIndexToNewIndex() {
+        List<Ingredient> expectedIngredients = new ArrayList<>();
+        List<Ingredient> actualIngredients = burger.ingredients;
 
+        expectedIngredients.add(0, firstMockIngredient);
+        burger.addIngredient(firstMockIngredient);
+
+        expectedIngredients.add(1, secondMockIngredient);
+        burger.addIngredient(secondMockIngredient);
+
+        expectedIngredients.add(2, thirdMockIngredient);
+        burger.addIngredient(thirdMockIngredient);
+
+        expectedIngredients.add(1, expectedIngredients.remove(0));
+        burger.moveIngredient(1, 0);
+
+        Assert.assertEquals("Failed to move ingredients by index", expectedIngredients, actualIngredients);
+    }
+
+    @Test
+    // проверить расчет стоимости бургера с дельтой 0.001
+    public void getPriceForBurger() {
+        Mockito.when(mockBun.getPrice()).thenReturn(TestBun.getTestBunPrice());
+        Mockito.when(firstMockIngredient.getPrice()).thenReturn(TestIngredient.getTestIngredientPrice());
+        burger.setBuns(mockBun);
+        burger.addIngredient(firstMockIngredient);
+        burger.addIngredient(secondMockIngredient);
+        burger.addIngredient(thirdMockIngredient);
+
+        float expectedPriceForBun = mockBun.getPrice() * 2;
+        float expectedPriceForIngredient = firstMockIngredient.getPrice() * TestIngredient.getTestIngredientCount();
+        float expectedPriceForBurger = expectedPriceForBun + expectedPriceForIngredient;
+
+        float actualPriceForBurger = burger.getPrice();
+
+        Assert.assertEquals("Incorrect burger price", expectedPriceForBurger, actualPriceForBurger, 0.001);
+    }
 }
