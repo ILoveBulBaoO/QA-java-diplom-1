@@ -35,6 +35,14 @@ public class IngredientTest {
         Assert.assertEquals("Incorrect ingredient name", expectedName, actualName);
     }
 
+    @Test
+    // проверим, что метод getType() возвращает тип Filling
+    public void getTypeReturnIngredientTypeFilling() {
+        IngredientType expectedTypeFilling = ingredientTypeFilling;
+        IngredientType actualTypeFilling = ingredient.getType();
+        Assert.assertEquals("Incorrect ingredient type", expectedTypeFilling, actualTypeFilling);
+    }
+
     @RunWith(Parameterized.class)
     public static class ParamIngredientTypeTest {
         private Ingredient ingredient;
