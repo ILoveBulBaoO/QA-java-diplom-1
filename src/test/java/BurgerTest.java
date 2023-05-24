@@ -31,13 +31,14 @@ public class BurgerTest {
     }
 
     @Test
+    // булочки для бургера
     public void setBunsToBurger() {
         burger.setBuns(mockBun);
 
         Bun expectedBun = mockBun;
         Bun actualBun = burger.bun;
 
-        Assert.assertEquals("Failed to set Buns", expectedBun, actualBun);
+        Assert.assertEquals("Failed to set Buns for burger", expectedBun, actualBun);
     }
 
     @Test
@@ -110,11 +111,31 @@ public class BurgerTest {
     public void getReceiptForBurger() {
         Mockito.when(mockBun.getName()).thenReturn(TestBun.getTestBunName());
         Mockito.when(mockIngredient.getType()).thenReturn(IngredientType.SAUCE);
+        Mockito.when(mockIngredient.getName()).thenReturn(TestIngredient.getTestIngredientName());
         burger.setBuns(mockBun);
+
+        // add ingredients
+        for (int i = 0; i < TestIngredient.getTestIngredientCount(); i ++) {
+            burger.addIngredient(mockIngredient);
+        }
+
+        StringBuilder stringBuilder = new StringBuilder(String.format("(==== %s ====)%n", mockBun.getName()));
+        for (int i = 0; i < TestIngredient.getTestIngredientCount(); i ++) {
+            stringBuilder.append(String.format("= %s %s =%n", mockIngredient.getType().toString().toLowerCase(),
+                    mockIngredient.getName()));
+        }
+
+        stringBuilder.append(String.format("(==== %s ====)%n", mockBun.getName()));
+        stringBuilder.append(String.format("%nPrice: %f%n", getPriceForBugger(TestIngredient.getTestIngredientCount())));
+
+        String expectedReceipt = stringBuilder.toString();
+        String actualReceipt = burger.getReceipt();
+
+        Assert.assertEquals("Failed to get receipt", expectedReceipt, actualReceipt);
 
     }
 
-    // приватный метод для расчета стоимости бургера
+    // приватный метод для расчета стоимости бургера с использованием мок объектов
     private float getPriceForBugger(int countOfIngredients) {
         float priceForBun = mockBun.getPrice() * 2;
         float priceForIngredient = mockIngredient.getPrice() * countOfIngredients;
